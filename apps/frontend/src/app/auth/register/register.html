@@ -1,0 +1,112 @@
+<div class="auth-layout">
+  <div class="auth-brand">
+    <div class="brand-content">
+      <div class="brand-logo">
+        <mat-icon>account_balance</mat-icon>
+        <span>Finanzas App</span>
+      </div>
+      <h1 class="brand-title">Crea tu cuenta</h1>
+      <p class="brand-description">
+        Unete y comienza a tomar el control de tus finanzas personales.
+        Registrate en menos de un minuto.
+      </p>
+      <div class="brand-features">
+        <div class="brand-feature">
+          <mat-icon>speed</mat-icon>
+          <span>Registro rapido y sencillo</span>
+        </div>
+        <div class="brand-feature">
+          <mat-icon>lock</mat-icon>
+          <span>Tus datos estan protegidos</span>
+        </div>
+        <div class="brand-feature">
+          <mat-icon>devices</mat-icon>
+          <span>Accede desde cualquier dispositivo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-form-container">
+      <div class="form-header">
+        <h1>Crear Cuenta</h1>
+        <p>Completa tus datos para registrarte</p>
+      </div>
+
+      @if (successMessage) {
+        <div class="alert-success">
+          <mat-icon>check_circle</mat-icon>
+          <span>{{ successMessage }}</span>
+        </div>
+      }
+      @if (errorMessage) {
+        <div class="alert-error">
+          <mat-icon>error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      @if (!successMessage) {
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="firstName" />
+            @if (form.get('firstName')?.hasError('required') && form.get('firstName')?.touched) {
+              <mat-error>El nombre es requerido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellido</mat-label>
+            <mat-icon matPrefix>badge</mat-icon>
+            <input matInput formControlName="lastName" />
+            @if (form.get('lastName')?.hasError('required') && form.get('lastName')?.touched) {
+              <mat-error>El apellido es requerido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Correo electronico</mat-label>
+            <mat-icon matPrefix>email</mat-icon>
+            <input matInput formControlName="email" type="email" />
+            @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+              <mat-error>El correo es requerido</mat-error>
+            }
+            @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+              <mat-error>Correo invalido</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Contrasena</mat-label>
+            <mat-icon matPrefix>vpn_key</mat-icon>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" />
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+              <mat-error>La contrasena es requerida</mat-error>
+            }
+            @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+              <mat-error>Minimo 8 caracteres</mat-error>
+            }
+          </mat-form-field>
+
+          <button mat-raised-button class="submit-btn" type="submit" [disabled]="form.invalid || loading">
+            @if (loading) {
+              <mat-spinner diameter="20"></mat-spinner>
+            } @else {
+              Registrarse
+            }
+          </button>
+        </form>
+      }
+
+      <div class="form-links">
+        <span>Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesion</a></span>
+      </div>
+    </div>
+  </div>
+</div>

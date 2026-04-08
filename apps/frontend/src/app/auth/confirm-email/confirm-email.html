@@ -1,0 +1,55 @@
+<div class="auth-layout">
+  <div class="auth-brand">
+    <div class="brand-content">
+      <div class="brand-logo">
+        <mat-icon>account_balance</mat-icon>
+        <span>Finanzas App</span>
+      </div>
+      <h1 class="brand-title">Confirmacion de correo</h1>
+      <p class="brand-description">
+        Estamos verificando tu direccion de correo electronico para
+        activar tu cuenta.
+      </p>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-form-container">
+      @if (loading) {
+        <div class="confirm-status">
+          <mat-spinner diameter="48"></mat-spinner>
+          <h2>Confirmando tu correo</h2>
+          <p>Espera un momento mientras verificamos tu cuenta...</p>
+        </div>
+      }
+      @if (successMessage) {
+        <div class="confirm-status">
+          <mat-icon class="status-icon success">check_circle</mat-icon>
+          <h2>Correo confirmado</h2>
+          <div class="alert-success">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{ successMessage }}</span>
+          </div>
+          <a routerLink="/auth/login" class="back-link">
+            <mat-icon>arrow_forward</mat-icon>
+            Ir a iniciar sesion
+          </a>
+        </div>
+      }
+      @if (errorMessage) {
+        <div class="confirm-status">
+          <mat-icon class="status-icon error">cancel</mat-icon>
+          <h2>Error de confirmacion</h2>
+          <div class="alert-error">
+            <mat-icon>error</mat-icon>
+            <span>{{ errorMessage }}</span>
+          </div>
+          <a routerLink="/auth/login" class="back-link">
+            <mat-icon>arrow_back</mat-icon>
+            Volver al inicio de sesion
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+.confirm-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 24px 0;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  p {
+    color: var(--color-text-secondary);
+    font-size: 15px;
+  }
+
+  .alert-success,
+  .alert-error {
+    width: 100%;
+  }
+}
+
+.status-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+
+  &.success {
+    color: var(--color-success);
+  }
+
+  &.error {
+    color: var(--color-error);
+  }
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-weight: 500;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}

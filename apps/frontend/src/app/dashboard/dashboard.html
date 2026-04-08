@@ -1,0 +1,50 @@
+<div class="dashboard">
+  <div class="welcome-section">
+    <div class="welcome-text">
+      <h1>Bienvenido, {{ authService.user()?.firstName }}</h1>
+      <p>Aqui tienes un resumen de tu actividad financiera</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon income">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Ingresos</span>
+        <span class="stat-value">$0.00</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon expenses">
+        <mat-icon>trending_down</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Gastos</span>
+        <span class="stat-value">$0.00</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon balance">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Balance</span>
+        <span class="stat-value">$0.00</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon savings">
+        <mat-icon>savings</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Ahorros</span>
+        <span class="stat-value">$0.00</span>
+      </div>
+    </div>
+  </div>
+</div>

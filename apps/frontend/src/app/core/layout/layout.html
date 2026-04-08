@@ -1,0 +1,99 @@
+<div class="layout" [class.sidebar-collapsed]="sidebarCollapsed()">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <mat-icon class="sidebar-logo">account_balance</mat-icon>
+      @if (!sidebarCollapsed()) {
+        <span class="sidebar-title">Finanzas</span>
+      }
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of visibleNavItems; track item.route) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [matTooltip]="sidebarCollapsed() ? item.label : ''"
+          matTooltipPosition="right"
+        >
+          <mat-icon>{{ item.icon }}</mat-icon>
+          @if (!sidebarCollapsed()) {
+            <span class="nav-label">{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-item collapse-btn" (click)="toggleSidebar()">
+        <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+        @if (!sidebarCollapsed()) {
+          <span class="nav-label">Colapsar</span>
+        }
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button mat-icon-button class="menu-toggle" (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <nav class="breadcrumbs">
+          <a routerLink="/dashboard" class="breadcrumb-item">
+            <mat-icon>home</mat-icon>
+          </a>
+          @for (crumb of breadcrumbService.breadcrumbs(); track crumb.url) {
+            <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+            <a [routerLink]="crumb.url" class="breadcrumb-item">{{ crumb.label }}</a>
+          }
+        </nav>
+      </div>
+
+      <div class="topbar-right">
+        <div class="user-info">
+          <div class="user-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="user-details">
+            <span class="user-name">{{ authService.user()?.firstName }} {{ authService.user()?.lastName }}</span>
+            <span class="user-role">{{ authService.user()?.role === 'admin' ? 'Administrador' : 'Usuario' }}</span>
+          </div>
+        </div>
+
+        <button mat-icon-button [matMenuTriggerFor]="settingsMenu" matTooltip="Configuracion">
+          <mat-icon>settings</mat-icon>
+        </button>
+
+        <mat-menu #settingsMenu="matMenu">
+          <button mat-menu-item routerLink="/dashboard">
+            <mat-icon>person</mat-icon>
+            <span>Mi perfil</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>tune</mat-icon>
+            <span>Preferencias</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="authService.logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar sesion</span>
+          </button>
+        </mat-menu>
+
+        <button mat-icon-button (click)="authService.logout()" matTooltip="Cerrar sesion">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

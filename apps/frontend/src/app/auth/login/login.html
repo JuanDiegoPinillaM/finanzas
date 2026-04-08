@@ -1,0 +1,84 @@
+<div class="auth-layout">
+  <div class="auth-brand">
+    <div class="brand-content">
+      <div class="brand-logo">
+        <mat-icon>account_balance</mat-icon>
+        <span>Finanzas App</span>
+      </div>
+      <h1 class="brand-title">Bienvenido de nuevo</h1>
+      <p class="brand-description">
+        Gestiona tus finanzas de manera inteligente. Controla ingresos, gastos y
+        mantente al dia con tus objetivos financieros.
+      </p>
+      <div class="brand-features">
+        <div class="brand-feature">
+          <mat-icon>trending_up</mat-icon>
+          <span>Control total de tus finanzas</span>
+        </div>
+        <div class="brand-feature">
+          <mat-icon>shield</mat-icon>
+          <span>Seguridad y privacidad garantizada</span>
+        </div>
+        <div class="brand-feature">
+          <mat-icon>insights</mat-icon>
+          <span>Reportes y estadisticas en tiempo real</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-form-container">
+      <div class="form-header">
+        <h1>Iniciar Sesion</h1>
+        <p>Ingresa tus credenciales para acceder</p>
+      </div>
+
+      @if (errorMessage) {
+        <div class="alert-error">
+          <mat-icon>error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electronico</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput formControlName="email" type="email" />
+          @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+            <mat-error>El correo es requerido</mat-error>
+          }
+          @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+            <mat-error>Correo invalido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contrasena</mat-label>
+          <mat-icon matPrefix>vpn_key</mat-icon>
+          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" />
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+            <mat-error>La contrasena es requerida</mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-raised-button class="submit-btn" type="submit" [disabled]="form.invalid || loading">
+          @if (loading) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            Iniciar Sesion
+          }
+        </button>
+      </form>
+
+      <div class="form-links">
+        <a routerLink="/auth/request-reset-password">Olvidaste tu contrasena?</a>
+        <span>No tienes cuenta? <a routerLink="/auth/register">Registrate</a></span>
+      </div>
+    </div>
+  </div>
+</div>
