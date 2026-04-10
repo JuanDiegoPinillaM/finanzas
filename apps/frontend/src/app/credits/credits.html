@@ -1,0 +1,118 @@
+<div class="credits-page">
+  <div class="page-header">
+    <div class="period-selector">
+      <button mat-icon-button (click)="changeMonth(-1)" matTooltip="Mes anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h2 class="period-label">{{ currentMonthName }} {{ currentYear }}</h2>
+      <button mat-icon-button (click)="changeMonth(1)" matTooltip="Mes siguiente">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary-grid">
+    <div class="summary-card total">
+      <div class="summary-icon">
+        <mat-icon>credit_score</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Total Credito Disponible</span>
+        <span class="summary-value">${{ totalAmount | number:'1.0-0' }}</span>
+      </div>
+    </div>
+    <div class="summary-card count">
+      <div class="summary-icon">
+        <mat-icon>store</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Lineas de Credito</span>
+        <span class="summary-value">{{ credits.length }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content card -->
+  <div class="content-card">
+    <div class="card-toolbar">
+      <h3 class="card-title">
+        <mat-icon>credit_score</mat-icon>
+        Creditos Disponibles
+      </h3>
+      <button mat-raised-button class="add-btn" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Nuevo Credito
+      </button>
+    </div>
+
+    @if (loading) {
+      <div class="loading-wrapper">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else if (credits.length === 0) {
+      <div class="empty-state">
+        <mat-icon>credit_score</mat-icon>
+        <p>No hay creditos registrados para este periodo</p>
+        <button mat-stroked-button (click)="openDialog()">
+          <mat-icon>add</mat-icon>
+          Agregar credito
+        </button>
+      </div>
+    } @else {
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="credits" class="data-table">
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Lugar</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="item-name">{{ row.location }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Monto Disponible</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="amount">${{ row.amount | number:'1.0-0' }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="type-chip">{{ row.type }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button mat-icon-button [matMenuTriggerFor]="menu" class="action-btn">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openDialog(row)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar</span>
+                </button>
+                <button mat-menu-item (click)="deleteCredit(row)" class="delete-item">
+                  <mat-icon>delete</mat-icon>
+                  <span>Eliminar</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <div class="footer-row">
+          <span class="footer-label">Total Disponible:</span>
+          <span class="footer-value">${{ totalAmount | number:'1.0-0' }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

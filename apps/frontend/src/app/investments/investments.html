@@ -1,0 +1,251 @@
+<div class="investments-page">
+  <div class="page-header">
+    <div class="period-selector">
+      <button mat-icon-button (click)="changeMonth(-1)" matTooltip="Mes anterior">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h2 class="period-label">{{ currentMonthName }} {{ currentYear }}</h2>
+      <button mat-icon-button (click)="changeMonth(1)" matTooltip="Mes siguiente">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Summary cards -->
+  <div class="summary-grid">
+    <div class="summary-card cdt">
+      <div class="summary-icon">
+        <mat-icon>savings</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Total CDTs</span>
+        <span class="summary-value">${{ cdtTotalValue | number:'1.0-0' }}</span>
+      </div>
+    </div>
+    <div class="summary-card currency">
+      <div class="summary-icon">
+        <mat-icon>currency_exchange</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Total Divisas</span>
+        <span class="summary-value">${{ currencyTotalValue | number:'1.2-2' }}</span>
+      </div>
+    </div>
+    <div class="summary-card returns">
+      <div class="summary-icon">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">Rendimiento Mensual CDTs</span>
+        <span class="summary-value">${{ cdtTotalMonthly | number:'1.0-0' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <mat-tab-group [(selectedIndex)]="selectedTabIndex" class="investments-tabs">
+    <!-- CDT TAB -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">savings</mat-icon>
+        CDTs
+        @if (cdtList.length > 0) {
+          <span class="tab-badge cdt">{{ cdtList.length }}</span>
+        }
+      </ng-template>
+
+      <div class="tab-content">
+        <div class="tab-toolbar">
+          <div class="tab-stats">
+            <span class="stat-chip annual">
+              <mat-icon>calendar_month</mat-icon>
+              Rendimiento Anual: ${{ cdtTotalAnnual | number:'1.0-0' }}
+            </span>
+          </div>
+          <button mat-raised-button class="add-btn" (click)="openDialog('cdt')">
+            <mat-icon>add</mat-icon>
+            Nuevo CDT
+          </button>
+        </div>
+
+        @if (loading) {
+          <div class="loading-wrapper">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+        } @else if (cdtList.length === 0) {
+          <div class="empty-state">
+            <mat-icon>savings</mat-icon>
+            <p>No hay CDTs registrados para este periodo</p>
+            <button mat-stroked-button (click)="openDialog('cdt')">
+              <mat-icon>add</mat-icon>
+              Agregar CDT
+            </button>
+          </div>
+        } @else {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="cdtList" class="data-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="item-name">{{ row.name }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Valor</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="amount">${{ row.value | number:'1.0-0' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="monthlyReturn">
+                <th mat-header-cell *matHeaderCellDef>Rendimiento Mensual</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="return-value">${{ (row.monthlyReturn || 0) | number:'1.0-0' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="annualReturn">
+                <th mat-header-cell *matHeaderCellDef>Rendimiento Anual</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="return-value">${{ (row.annualReturn || 0) | number:'1.0-0' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button [matMenuTriggerFor]="cdtMenu" class="action-btn">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #cdtMenu="matMenu">
+                    <button mat-menu-item (click)="openDialog('cdt', row)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Editar</span>
+                    </button>
+                    <button mat-menu-item (click)="deleteInvestment(row)" class="delete-item">
+                      <mat-icon>delete</mat-icon>
+                      <span>Eliminar</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="cdtColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: cdtColumns"></tr>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <div class="footer-row">
+              <span class="footer-label">Total:</span>
+              <span class="footer-value">${{ cdtTotalValue | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-tab>
+
+    <!-- DIVISAS TAB -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">currency_exchange</mat-icon>
+        Divisas
+        @if (currencyList.length > 0) {
+          <span class="tab-badge currency">{{ currencyList.length }}</span>
+        }
+      </ng-template>
+
+      <div class="tab-content">
+        <div class="tab-toolbar">
+          <div class="tab-stats">
+            <span class="stat-chip cop">
+              <mat-icon>attach_money</mat-icon>
+              Valor en COP: ${{ currencyTotalCOP | number:'1.0-0' }}
+            </span>
+          </div>
+          <button mat-raised-button class="add-btn" (click)="openDialog('currency')">
+            <mat-icon>add</mat-icon>
+            Nueva Divisa
+          </button>
+        </div>
+
+        @if (loading) {
+          <div class="loading-wrapper">
+            <mat-spinner diameter="40"></mat-spinner>
+          </div>
+        } @else if (currencyList.length === 0) {
+          <div class="empty-state">
+            <mat-icon>currency_exchange</mat-icon>
+            <p>No hay divisas registradas para este periodo</p>
+            <button mat-stroked-button (click)="openDialog('currency')">
+              <mat-icon>add</mat-icon>
+              Agregar divisa
+            </button>
+          </div>
+        } @else {
+          <div class="table-wrapper">
+            <table mat-table [dataSource]="currencyList" class="data-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Divisa</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="item-name">{{ row.name }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Valor</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="amount">${{ row.value | number:'1.2-2' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="valueCOP">
+                <th mat-header-cell *matHeaderCellDef>Valor en COP</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="amount cop">${{ (row.valueCOP || 0) | number:'1.0-0' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="exchangeRate">
+                <th mat-header-cell *matHeaderCellDef>Tasa de Cambio</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="exchange-rate">${{ (row.exchangeRate || 0) | number:'1.2-2' }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row">
+                  <button mat-icon-button [matMenuTriggerFor]="currencyMenu" class="action-btn">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #currencyMenu="matMenu">
+                    <button mat-menu-item (click)="openDialog('currency', row)">
+                      <mat-icon>edit</mat-icon>
+                      <span>Editar</span>
+                    </button>
+                    <button mat-menu-item (click)="deleteInvestment(row)" class="delete-item">
+                      <mat-icon>delete</mat-icon>
+                      <span>Eliminar</span>
+                    </button>
+                  </mat-menu>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="currencyColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: currencyColumns"></tr>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <div class="footer-row">
+              <span class="footer-label">Total:</span>
+              <span class="footer-value">${{ currencyTotalValue | number:'1.2-2' }} / ${{ currencyTotalCOP | number:'1.0-0' }} COP</span>
+            </div>
+          </div>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

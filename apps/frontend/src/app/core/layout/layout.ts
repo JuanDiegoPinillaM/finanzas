@@ -40,6 +40,11 @@ export class LayoutComponent {
 
   navItems: NavItem[] = [
     { icon: 'dashboard', label: 'Dashboard', route: '/dashboard' },
+    { icon: 'swap_vert', label: 'Ingresos y Egresos', route: '/transactions' },
+    { icon: 'account_balance_wallet', label: 'Dinero', route: '/accounts' },
+    { icon: 'balance', label: 'Deudores y Deudas', route: '/debts' },
+    { icon: 'savings', label: 'Inversiones', route: '/investments' },
+    { icon: 'credit_score', label: 'Creditos', route: '/credits' },
     { icon: 'people', label: 'Usuarios', route: '/users', roles: ['admin'] },
   ];
 

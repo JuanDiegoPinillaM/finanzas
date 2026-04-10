@@ -53,6 +53,40 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('./dashboard/dashboard').then((m) => m.DashboardComponent),
       },
+      {
+        path: 'transactions',
+        data: { breadcrumb: 'Ingresos y Egresos' },
+        loadComponent: () =>
+          import('./transactions/transactions').then(
+            (m) => m.TransactionsComponent,
+          ),
+      },
+      {
+        path: 'accounts',
+        data: { breadcrumb: 'Dinero' },
+        loadComponent: () =>
+          import('./accounts/accounts').then((m) => m.AccountsComponent),
+      },
+      {
+        path: 'debts',
+        data: { breadcrumb: 'Deudores y Deudas' },
+        loadComponent: () =>
+          import('./debts/debts').then((m) => m.DebtsComponent),
+      },
+      {
+        path: 'investments',
+        data: { breadcrumb: 'Inversiones' },
+        loadComponent: () =>
+          import('./investments/investments').then(
+            (m) => m.InvestmentsComponent,
+          ),
+      },
+      {
+        path: 'credits',
+        data: { breadcrumb: 'Creditos' },
+        loadComponent: () =>
+          import('./credits/credits').then((m) => m.CreditsComponent),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

@@ -1,0 +1,274 @@
+.debts-page {
+  max-width: 1100px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .period-label {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-text);
+    min-width: 200px;
+    text-align: center;
+  }
+}
+
+// === Summary ===
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.summary-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+
+  .summary-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      color: #fff;
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &.debtors .summary-icon {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+
+  &.creditors .summary-icon {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+  }
+
+  &.balance .summary-icon {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+  }
+
+  &.balance.negative .summary-icon {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+  }
+}
+
+.summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.summary-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+// === Tabs ===
+.debts-tabs {
+  background: var(--color-surface);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.tab-icon {
+  margin-right: 6px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.tab-badge {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.debtor {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+
+  &.creditor {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+}
+
+.tab-content {
+  padding: 20px 24px 24px;
+}
+
+.tab-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tab-subtitle {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.add-btn {
+  background: var(--color-primary) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+// === Table ===
+.table-wrapper {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+
+  th {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    background: #f8fafc;
+  }
+
+  td {
+    font-size: 14px;
+    color: var(--color-text);
+  }
+}
+
+.item-name {
+  font-weight: 500;
+}
+
+.amount {
+  font-weight: 700;
+  font-size: 15px;
+
+  &.debtor {
+    color: #16a34a;
+  }
+
+  &.creditor {
+    color: #dc2626;
+  }
+}
+
+.description {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.action-btn {
+  opacity: 0.5;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.delete-item {
+  color: #dc2626 !important;
+}
+
+.table-footer {
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.footer-value {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+// === Empty & Loading ===
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  gap: 12px;
+  color: var(--color-text-secondary);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: 15px;
+  }
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+@media (max-width: 768px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

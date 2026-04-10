@@ -1,0 +1,45 @@
+<div class="period-selector">
+  <!-- Top row: arrows + month/year label + today button -->
+  <div class="period-header">
+    <button mat-icon-button (click)="changeMonth(-1)" matTooltip="Mes anterior">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <h2 class="period-label">{{ currentMonthName }} {{ currentYear }}</h2>
+
+    <button mat-icon-button (click)="changeMonth(1)" matTooltip="Mes siguiente">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+
+    @if (!isCurrentPeriod) {
+      <button mat-stroked-button class="today-btn" (click)="goToToday()" matTooltip="Ir al mes actual">
+        <mat-icon>today</mat-icon>
+        Hoy
+      </button>
+    }
+  </div>
+
+  <!-- Year navigation -->
+  <div class="year-row">
+    <button mat-icon-button class="year-arrow" (click)="changeYear(-1)" matTooltip="Año anterior">
+      <mat-icon>keyboard_double_arrow_left</mat-icon>
+    </button>
+    <span class="year-label">{{ currentYear }}</span>
+    <button mat-icon-button class="year-arrow" (click)="changeYear(1)" matTooltip="Año siguiente">
+      <mat-icon>keyboard_double_arrow_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- Month grid -->
+  <div class="months-grid">
+    @for (month of months; track $index) {
+      <button
+        class="month-cell"
+        [class.active]="$index + 1 === currentMonth"
+        (click)="selectMonth($index)"
+      >
+        {{ month }}
+      </button>
+    }
+  </div>
+</div>
