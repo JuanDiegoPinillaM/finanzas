@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Account, AccountSummary, CreateAccount } from '../models/account.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountsService {
-  private readonly apiUrl = 'http://localhost:3000/api/accounts';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly apiUrl = 'http://localhost:3000/api/accounts';
 
   getByPeriod(period: string): Observable<Account[]> {
     return this.http.get<Account[]>(`${this.apiUrl}?period=${period}`);

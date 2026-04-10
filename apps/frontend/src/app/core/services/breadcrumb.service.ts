@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { signal } from '@angular/core';
@@ -10,9 +10,11 @@ export interface Breadcrumb {
 
 @Injectable({ providedIn: 'root' })
 export class BreadcrumbService {
+  private router = inject(Router);
+
   readonly breadcrumbs = signal<Breadcrumb[]>([]);
 
-  constructor(private router: Router) {
+  constructor() {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

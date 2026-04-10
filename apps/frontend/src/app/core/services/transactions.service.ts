@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   CreateTransaction,
@@ -10,9 +10,9 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class TransactionsService {
-  private readonly apiUrl = 'http://localhost:3000/api/transactions';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly apiUrl = 'http://localhost:3000/api/transactions';
 
   getByPeriod(period: string, type?: TransactionType): Observable<Transaction[]> {
     let url = `${this.apiUrl}?period=${period}`;
